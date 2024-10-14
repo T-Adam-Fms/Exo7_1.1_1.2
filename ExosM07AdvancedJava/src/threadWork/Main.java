@@ -1,23 +1,35 @@
 package threadWork;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Main {
+    public static void main(String[] args) { 
+        // Initialize the list of numbers
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            numbers.add(i);
+        }
 
-	public static void main(String[] args) {
-		// create runnable objects
-		Runnable r1 = new TestRunnable ('*');
-		Runnable r2 = new TestRunnable ('§');
-		Runnable r3 = new TestRunnable ('&');
-		Runnable r4 = new TestRunnable ('@');
-		Runnable r5 = new TestRunnable ('(');
-		
-		// run them in separate threads
-		new Thread (r1).start();
-		new Thread (r2).start();
-		new Thread (r3).start();
-		new Thread (r4).start();
-		new Thread (r5).start();		
-		
-	}
-	
+        // Shuffle the list to randomize the order of execution
+        Collections.shuffle(numbers);
 
+        // Create and start threads
+        Thread[] threads = new Thread[5];
+        for (int i = 0; i < 5; i++) {
+            // Create a new thread for each number
+            threads[i] = new Thread(new TestRunnable(numbers.get(i))); 
+            threads[i].start(); 
+        }
+
+        // Wait for all threads to complete
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                System.out.println("Thread interrupted: " + e.getMessage());
+            }
+        }
+    } 
 }

@@ -9,7 +9,7 @@ package TryCatchExo;
 // ex city7 i will implante a throw method
 public class City {
     private String name;
-    private int nbInhabitants;
+    private static int nbInhabitants;
 
     public City(String name, int nbInhabitants) throws InvalidCity {
         this.name = name;
@@ -22,6 +22,11 @@ public class City {
         }
         this.nbInhabitants = nbInhabitants;
     }
+
+	public static Object getPopulation() {
+		// TODO Auto-generated method stub
+		return nbInhabitants;
+	}
 }
 
 class InvalidCity extends Exception {

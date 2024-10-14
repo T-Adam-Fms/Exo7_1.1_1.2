@@ -1,21 +1,41 @@
 package threadWork;
 
-public class TestRunnable implements Runnable { 
-	
-	private char symbol; // Single variable to hold the symbol public TestRunnable(char symbol) {
-		this.symbol = symbol; } 
+import java.util.ArrayList;
+import java.util.List;
 
-	@Override 
-	public void run() { 
-		for (int i = 0; i < 10; i++) { 
-			System.out.print(symbol); 
-			try { 
-				Thread.sleep(500); // Pause for half a second 
-				} catch (InterruptedException e) { 
-					System.out.println(e.getMessage()); } 
-			} System.out.println(); 
-			// Move to the next line after printing symbols 
-			} public static void main(String[] args) { Thread thread1 = new Thread(new TestRunnable('*')); Thread thread2 = new Thread(new TestRunnable('#')); Thread thread3 = new Thread(new TestRunnable('%')); thread1.start(); thread2.start(); thread3.start(); } } 
-		}
-	
+public class TestRunnable implements Runnable {
+    private static final Object lock = new Object(); // Lock object for synchronization
+    private static final List<Integer> numbers = new ArrayList<>(); // Shared list for numbers
+    private int number; // Number to print
+
+    public TestRunnable(int number) {
+        this.number = number; 
+        synchronized (lock) {
+            // Add the number to the static list upon construction
+            if (!numbers.contains(number)) {
+                numbers.add(number);
+            }
+        }
+    }
+
+    @Override 
+    public void run() {
+        synchronized (lock) {
+            // Print the number followed by dashes
+            System.out.print(number + " "); // Print the number
+            
+            // Print dashes based on the number
+            for (int j = 0; j < number; j++) {
+                System.out.print("-"); // Print the dashes
+            }
+            System.out.println(); // Move to the next line
+        }
+
+        // Introduce a random sleep time to create a mixed order
+        try {
+            Thread.sleep((long) (Math.random() * 500)); // Sleep for a random time up to 500 milliseconds
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restore interrupt status
+        }
+    } 
 }
