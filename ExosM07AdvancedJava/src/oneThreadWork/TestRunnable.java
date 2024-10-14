@@ -1,13 +1,14 @@
 package oneThreadWork;
 
-package threadWork;
 
-import threadWork.TestRunnable;
 
-public class TestRunnable implements Runnable { 
-	
-	private char symbol; // Single variable to hold the symbol public TestRunnable(char symbol) {
-		this.symbol = symbol; } 
+
+
+	public class TestRunnable implements Runnable{ 
+	private char symbol; // Single variable to hold the symbol public 
+	TestRunnable(char symbol) { 
+		this.symbol = symbol; 
+		}
 
 	@Override 
 	public void run() { 
